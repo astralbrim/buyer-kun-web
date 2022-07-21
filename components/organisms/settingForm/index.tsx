@@ -64,7 +64,7 @@ const SettingForm: FC<SettingFromProps> = (props) => {
           />
         </ListItem>
       </List>
-      <Button className="w-1/2 inline-block mt-4 mr-4" onClick={handleSubmit(save, (_errors) => alert("ダメです"))} variant="outlined">保存</Button>
+        <Button className="w-1/2 inline-block mt-4 mr-4" onClick={handleSubmit(save, (_errors) => alert("ダメです"))} variant="outlined">保存</Button>
     </form>
   )
 }

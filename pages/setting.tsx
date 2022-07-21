@@ -28,6 +28,10 @@ const Setting: NextPage<SettingPageProps> = (props) => {
 
 export const getServerSideProps: GetServerSideProps<SettingPageProps> = async () => {
 
+  const data = await getSetting();
+  if(!data) return {
+    notFound: true,
+  }
   const props: SettingPageProps = {
     data: await getSetting(),
   }

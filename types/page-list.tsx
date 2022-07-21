@@ -1,4 +1,4 @@
-import {Home, Settings} from "@mui/icons-material";
+import {Computer, Home, Search, Settings} from "@mui/icons-material";
 
 export interface Page {
   title: string;
@@ -16,5 +16,15 @@ export const pageList: Page[] = [
     title: "設定",
     path: "/setting",
     icon: <Settings />
+  },
+  {
+    title: "相場調査",
+    path: "/market-researcher",
+    icon: <Search />
+  },
+  {
+    title: "パーツ",
+    path: "/market-researcher/part",
+    icon: <Computer />
   }
 ]
