@@ -10,9 +10,10 @@ import {
   Tooltip,
   Typography
 } from "@mui/material";
-import {Home, Menu, Settings} from "@mui/icons-material";
+import {Menu} from "@mui/icons-material";
 import {FC} from "react";
 import Link from "next/link";
+import {pageList} from "../../../types/page-list";
 
 export interface HeaderProps {
   isSideBarOpen: boolean;
@@ -43,22 +44,16 @@ const Header: FC<HeaderProps> = (props) => {
           }}
         >
           <List className="p-3">
-            <Link href="/">
-              <Tooltip title="top">
-                <ListItem>
-                  <ListItemIcon><Home /></ListItemIcon>
-                  <ListItemText>トップ</ListItemText>
-                </ListItem>
-              </Tooltip>
-            </Link>
-            <Link href="/setting">
-              <Tooltip title="setting">
-                <ListItem>
-                  <ListItemIcon><Settings /></ListItemIcon>
-                  <ListItemText>設定</ListItemText>
-                </ListItem>
-              </Tooltip>
-            </Link>
+            {pageList.map(({title, path, icon}) => (
+              <Link href={path} key={path}>
+                <Tooltip title={title}>
+                  <ListItem>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText>{title}</ListItemText>
+                  </ListItem>
+                </Tooltip>
+              </Link>
+            ))}
           </List>
         </Drawer>
       </AppBar>
