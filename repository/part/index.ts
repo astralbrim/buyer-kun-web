@@ -12,7 +12,7 @@ export const getAllParts = async (): Promise<AxiosResponse<PartModel[]>> => {
 }
 
 export const postParts = async (data: PartModel[]): Promise<AxiosResponse<PartModel[]>> => {
-  return await axios.post<PartModel[]>(PART_URL, data).catch(
+  return await axios.post<PartModel[]>(`${PART_URL}/list`, data).catch(
     (error) => {
       throw new Error(error)
     }

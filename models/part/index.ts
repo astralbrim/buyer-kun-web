@@ -1,8 +1,9 @@
-import {ProductType} from "../../types/product-type";
+import {PartType} from "../part-type";
 
 export interface PartModel {
   name: string;
-  type: ProductType;
-  minPrice: number;
-  maxPrice: number;
+  partTypes: PartType;
+  minPrice?: number;
+  maxPrice?: number;
+  isResearchTarget: boolean;
 }

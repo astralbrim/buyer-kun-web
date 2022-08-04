@@ -1,12 +1,12 @@
 import {NextPage} from "next";
 import BasePageTemplate from "../../components/templates/basePageTemplate";
 
-export interface MarketResearcherProps {
+export interface StockManagerProps {
 
 }
-const Index: NextPage<MarketResearcherProps> = (props) => {
+const Index: NextPage<StockManagerProps> = (props) => {
   return (
-    <BasePageTemplate pageName="市場調査">
+    <BasePageTemplate pageName="在庫管理">
 
     </BasePageTemplate>
   )

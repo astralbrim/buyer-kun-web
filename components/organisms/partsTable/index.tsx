@@ -1,6 +1,6 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {
-  Button,
+  Button, Checkbox,
   Paper,
   Table,
   TableBody,
@@ -12,6 +12,9 @@ import {
 } from "@mui/material";
 import {PartModel} from "../../../models/part";
 import {useFieldArray, useForm} from "react-hook-form";
+import SelectInput from "../../molecules/selectInput";
+import {getAll} from "../../../services/part-types";
+import {PartType} from "../../../models/part-type";
 
 export interface PartsTableProps {
   data: PartModel[];
@@ -22,14 +25,34 @@ export interface PartsForm {
 }
 const PartsTable: FC<PartsTableProps> = (props) => {
   const {data, onSave} = props;
-  const {handleSubmit, register, control} = useForm<PartsForm>({defaultValues: {parts: data}});
-  const {fields, append, remove} = useFieldArray({control, name: "parts"})
+  console.log(data);
+  const {handleSubmit, register, control, watch} = useForm<PartsForm>({defaultValues: {parts: data}});
+  const {fields, append, remove} = useFieldArray({control, name: "parts"});
+  const watchFields = watch("parts");
   const addPart = () => {
-    append({name: "", type: "graphic-board", maxPrice: Number(), minPrice: Number()})
+    append({name: "",maxPrice: Number(), minPrice: Number(), partTypes: {name: ""}})
   }
   const removePart = (index: number) => {
     remove(index);
   }
+  const [partTypes, setPartTypes] = useState<PartType[]>();
+
+  useState(
+    () => {
+      const getPartTypes = async () => {
+        const result = await getAll();
+        if(!result) return;
+        setPartTypes(result);
+      }
+      void getPartTypes();
+    }
+  )
+
+  if(!partTypes) return null;
+
+  const selectPartTypes = partTypes.map(
+    (partType) => ({display: partType.name, value: partType.name})
+  )
 
   return (
     <div>
@@ -38,6 +61,7 @@ const PartsTable: FC<PartsTableProps> = (props) => {
           <TableHead>
             <TableRow>
               <TableCell>パーツ名</TableCell>
+              <TableCell>相場の調査対象</TableCell>
               <TableCell>最低価格</TableCell>
               <TableCell>最高価格</TableCell>
               <TableCell>種類</TableCell>
@@ -47,16 +71,23 @@ const PartsTable: FC<PartsTableProps> = (props) => {
             {fields.map((field, index) => (
               <TableRow key={field.id}>
                 <TableCell>
-                  <TextField defaultValue={field.name} {...register(`parts.${index}.name` as const)} />
+                  <TextField {...register(`parts.${index}.name` as const)} />
                 </TableCell>
                 <TableCell>
-                  <TextField defaultValue={field.minPrice} {...register(`parts.${index}.minPrice` as const)}/>
+                  <Checkbox defaultChecked={field.isResearchTarget} {...register(`parts.${index}.isResearchTarget` as const)}/>
                 </TableCell>
                 <TableCell>
-                  <TextField defaultValue={field.maxPrice} {...register(`parts.${index}.maxPrice` as const)}/>
+                  <TextField disabled={!watchFields[index].isResearchTarget} {...register(`parts.${index}.minPrice` as const)}/>
                 </TableCell>
                 <TableCell>
-                  <TextField defaultValue={field.type} {...register(`parts.${index}.type` as const)} />
+                  <TextField disabled={!watchFields[index].isResearchTarget}  {...register(`parts.${index}.maxPrice` as const)}/>
+                </TableCell>
+                <TableCell>
+                  <SelectInput
+                    control={control}
+                    items={selectPartTypes}
+                    {...register(`parts.${index}.partTypes.name` as const)}
+                  />
                 </TableCell>
                 <TableCell><Button onClick={() => removePart(index)}>削除</Button></TableCell>
               </TableRow>

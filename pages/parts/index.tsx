@@ -4,10 +4,10 @@ import {getPart, saveParts} from "../../services/part";
 import BasePageTemplate from "../../components/templates/basePageTemplate";
 import PartsTable from "../../components/organisms/partsTable";
 
-export interface PartProps {
+export interface PartsProps {
   parts: PartModel[]
 }
-const Part: NextPage<PartProps> = (props) => {
+const Index: NextPage<PartsProps> = (props) => {
   const {parts} = props;
   const onSave = async (data: PartModel[]) => {
     await saveParts(data);
@@ -22,7 +22,7 @@ const Part: NextPage<PartProps> = (props) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<PartProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PartsProps> = async () => {
   const part = await getPart();
   if(!part) return {
     notFound: true
@@ -34,4 +34,4 @@ export const getServerSideProps: GetServerSideProps<PartProps> = async () => {
   }
 }
 
-export default Part;
+export default Index;
